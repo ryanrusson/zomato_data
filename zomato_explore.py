@@ -5,18 +5,13 @@ import numpy as np
 import xgboost as xgb
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
-#from sklearn.preprocessing import LabelEncoder
-#from sklearn.preprocessing import OneHotEncoder
+import pickle
+from sklearn.cluster import KMeans
 
-filename = 'zomato.csv'
-df = pd.read_csv(filename, dtype={'approx_cost(for two people)': str})
-print("length before NA drop: ", len(df))
-df.dropna(inplace=True)
-print("length after NA drop: ", len(df))
-df['cost'] = df['approx_cost(for two people)'].astype(str)
-df['cost'] = df['cost'].apply(lambda x: float(x.replace(",", "")))
-df['score'] = df['rate'].apply(lambda x: x.split("/")[0])
-df['score'] = df['score'].apply(lambda x: 0.0 if x == 'NEW' else float(x))
+filename = 'data.p'
+df = pickle.load(open("data.p", "rb"))
+
+
 
 # Get a list of the interesting features
 dfsub = df.iloc[:, [2, 3, 4, 6, 8, 9, 11, 15, 16, 17, 18]]
